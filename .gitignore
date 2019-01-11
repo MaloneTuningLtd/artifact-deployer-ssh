@@ -1,0 +1,4 @@
+.vscode/
+
+artifact-deployer-ssh
+test.sh
