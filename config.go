@@ -6,7 +6,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
-	"strings"
+	"regexp"
 
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/ssh"
@@ -117,7 +117,8 @@ func loadIntoConfig(c *Config) {
 	}
 
 	if directories, k := getEnv("SHARED_DIRS"); k {
-		c.SharedDirs = strings.Split(directories, " ")
+		delimit := regexp.MustCompile("[\\,\\s+]")
+		c.SharedDirs = delimit.Split(directories, -1)
 	}
 }
 
