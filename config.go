@@ -6,6 +6,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/ssh"
@@ -21,6 +22,7 @@ type Config struct {
 	Binary      string
 	Tag         string
 	ProjectPath string
+	SharedDirs  []string
 }
 
 func getEnv(key string) (result string, found bool) {
@@ -112,6 +114,10 @@ func loadIntoConfig(c *Config) {
 		log.Fatal(err)
 	} else {
 		c.ProjectPath = projectPath
+	}
+
+	if directories, k := getEnv("SHARED_DIRS"); k {
+		c.SharedDirs = strings.Split(directories, " ")
 	}
 }
 

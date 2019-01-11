@@ -6,8 +6,7 @@ import (
 )
 
 var (
-	config Config
-
+	config         Config
 	supportSymlink bool
 )
 
@@ -19,6 +18,9 @@ func prerelease(s *SSHSession, releasePath string) {
 		HasMkDir(releasePath),
 		Symlink(releasePath, symlinkPath),
 	}
+
+	symlinks := SymlinkSharedDirs(config.SharedDirs, releasePath)
+	tasks = append(tasks, symlinks...)
 
 	s.RunTasks(tasks)
 }

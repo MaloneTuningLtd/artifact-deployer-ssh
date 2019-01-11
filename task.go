@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"path/filepath"
 	"strings"
 )
 
@@ -20,6 +21,22 @@ func HasMkDir(dir string) Task {
 	return Task{
 		command: cmd,
 	}
+}
+
+func SymlinkSharedDirs(dirs []string, releasePath string) (tasks Tasks) {
+	sharedPath := filepath.Join(config.ProjectPath, "shared")
+	hasDir := TestOnce(fmt.Sprintf(`[[ -d "%s" ]]`, sharedPath))
+
+	if hasDir {
+		for _, d := range dirs {
+			sharedDir := filepath.Join(sharedPath, d)
+			releaseDir := filepath.Join(releasePath, d)
+
+			tasks = append(tasks, Symlink(sharedDir, releaseDir))
+		}
+	}
+
+	return
 }
 
 func Symlink(dir1, dir2 string) Task {

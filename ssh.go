@@ -82,6 +82,8 @@ func (session *SSHSession) RunTasks(tasks Tasks) {
 
 	// get stdin pipe to shove commands in
 	stdin, err := session.Session.StdinPipe()
+	defer stdin.Close()
+
 	if err != nil {
 		log.Fatal(err)
 	}
