@@ -55,6 +55,14 @@ func Symlink(dir1, dir2 string) Task {
 	}
 }
 
+func HasRmSymlink(symlinkDir string) (task Task) {
+	if supportSymlink {
+		task.command = fmt.Sprintf(`if [ -L "%[1]v" ]; then rm "%[1]v"; fi`, symlinkDir)
+	}
+
+	return
+}
+
 func (t Task) GetCmd() string {
 	return fmt.Sprintf("%s %s", t.command, strings.Join(t.args, " "))
 }

@@ -16,6 +16,7 @@ func prerelease(s *SSHSession, releasePath string) {
 	tasks := Tasks{
 		HasMkDir(config.ProjectPath),
 		HasMkDir(releasePath),
+		HasRmSymlink(symlinkPath),
 		Symlink(releasePath, symlinkPath),
 	}
 
