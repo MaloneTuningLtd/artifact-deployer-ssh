@@ -106,7 +106,12 @@ func loadIntoConfig(c *Config) {
 		err := errors.New("Tag should be defined")
 		log.Fatal(err)
 	} else {
-		c.Tag = t
+		if t != "" {
+			c.Tag = t
+		} else {
+			CI := os.Getenv("CI")
+			c.Tag = os.Getenv(CI + "_COMMIT_SHA")
+		}
 	}
 
 	if projectPath, k := getEnv("PROJECT_PATH"); !k {
